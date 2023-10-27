@@ -20,10 +20,11 @@ module.exports = (container) => {
       if (!name) {
         return res.status(httpCode.BAD_REQUEST).json({ msg: 'name required' })
       }
-      const url = await minioHelper.getPresignedUrl(extractFileExtension(name))
+      const minioName = extractFileExtension(name)
+      const url = await minioHelper.getPresignedUrl(minioName)
       res.status(httpCode.SUCCESS).json({
         url,
-        name
+        name: minioName
       })
     } catch (e) {
       logger.e(e)
