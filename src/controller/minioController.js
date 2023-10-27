@@ -5,13 +5,22 @@ module.exports = (container) => {
     serverHelper
   } = container.resolve('config')
   const minioHelper = container.resolve('minioHelper')
+
+  const extractFileExtension = filename => {
+    const files = filename.split('.')
+    const extension = files.pop()
+    const file = files.join('.')
+    const time = (Date.now() / 1000).toFixed(3)
+    return `${serverHelper.stringToSlug(file)}-${time}.${extension}`
+  }
+
   const getPresignedUrl = async (req, res) => {
     try {
       const { name } = req.query
       if (!name) {
         return res.status(httpCode.BAD_REQUEST).json({ msg: 'name required' })
       }
-      const url = await minioHelper.getPresignedUrl(name)
+      const url = await minioHelper.getPresignedUrl(extractFileExtension(name))
       res.status(httpCode.SUCCESS).json({
         url,
         name

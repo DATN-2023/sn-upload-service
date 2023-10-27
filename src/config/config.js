@@ -47,15 +47,31 @@ const serverHelper = function () {
     return crypto.createHash('sha256').update(password, 'binary').digest('base64')
   }
 
-  return { decodeToken, encryptPassword, verifyToken, genToken }
+  function stringToSlug (str) {
+    const from = 'àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ'
+    const to = 'aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy'
+    for (let i = 0, l = from.length; i < l; i++) {
+      str = str.replace(RegExp(from[i], 'gi'), to[i])
+    }
+
+    str = str.toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9/ -]/g, '')
+      .replace(/ +/g, '-')
+
+    return str
+  }
+
+
+  return { decodeToken, encryptPassword, verifyToken, genToken, stringToSlug }
 }
 
 const minioConfig = {
-  endPoint: process.env.MINIO_ENDPOINT || 'localhost',
+  endPoint: process.env.MINIO_ENDPOINT || '127.0.0.1',
   port: process.env.MINIO_PORT || 9000,
   useSSL: process.env.MINIO_USESSL || false,
-  accessKey: process.env.MINIO_ACCESSKEY || 'v5PLYYDv2rw9TqASuo9z',
-  secretKey: process.env.MINIO_SECRETKEY || 'j1wFnhII2xgwa0v67n2YLTw5ZkBLBrOuKglKENKk',
+  accessKey: process.env.MINIO_ACCESSKEY || '9s7yoeIjnXuQerU2Zu3A',
+  secretKey: process.env.MINIO_SECRETKEY || '5zhUE5gb600VFXmHkx7MOVbt01CGkKULzsJ3Dmff',
   bucket: process.env.MINIO_BUCKET || 'social-network'
 }
 module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, minioConfig }
