@@ -69,7 +69,7 @@ const serverHelper = function () {
 const minioConfig = {
   endPoint: process.env.MINIO_ENDPOINT || '127.0.0.1',
   port: +process.env.MINIO_PORT || 9000,
-  useSSL: process.env.MINIO_USESSL || false,
+  useSSL: !!process.env.MINIO_USESSL || false,
   accessKey: process.env.MINIO_ACCESSKEY || '9s7yoeIjnXuQerU2Zu3A',
   secretKey: process.env.MINIO_SECRETKEY || '5zhUE5gb600VFXmHkx7MOVbt01CGkKULzsJ3Dmff',
   bucket: process.env.MINIO_BUCKET || 'social-network'
